@@ -76,7 +76,7 @@ export default function CommandStrip({
         <span className="df-command-live" />
 
         <div className="df-command-title">
-          <strong>员工薪资与档案</strong>
+          <strong>员工薪资与档案11</strong>
 
           <span>HR Staff Master</span>
         </div>
