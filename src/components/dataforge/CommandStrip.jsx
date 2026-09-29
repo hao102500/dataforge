@@ -64,7 +64,7 @@ export default function CommandStrip({
       {/* 左侧信息 */}
 
       <div className="df-command-left">
-        <span className="df-command-live" />
+        {/* <span className="df-command-live" /> */}
 
         <div className="df-command-title">
           <strong>员工薪资与档案</strong>
@@ -126,7 +126,7 @@ export default function CommandStrip({
           DDL 逆向
         </Button> */}
 
-        <CommandStatus />
+        {/* <CommandStatus /> */}
       </div>
     </header>
   );
