@@ -1,16 +1,59 @@
-# React + Vite
+# DataForge
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+> Schema-driven fake data generator
 
-Currently, two official plugins are available:
+基于 Schema 配置的数据生成平台。
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+支持：
 
-## React Compiler
+- Faker 中文数据
+- 手机号生成
+- 身份证生成
+- 银行卡生成
+- 随机数据
+- 枚举数据
+- 序列数据
+- 日期数据
+- 唯一值生成
+- 空值生成
+- Web Worker 高性能生成
+- 多格式导出
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+# 技术栈
+
+
+## Frontend
+
+- React 18
+- Vite
+- Ant Design
+- Zustand
+- XLSX
+
+
+## Data Engine
+
+- Faker
+- Web Worker
+- Schema Driver
+
+
+## Export
+
+支持：
+
+- Excel
+- CSV
+- JSON
+- SQL
+
+
+数据库：
+
+- MySQL
+
+
+---
