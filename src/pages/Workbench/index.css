@@ -1,0 +1,1962 @@
+:root {
+  /* ================================
+     DataForge / Stitch Design Tokens
+  ================================= */
+
+  --primary: #4241bc;
+  --primary-container: #5b5bd6;
+
+  --secondary: #5148ca;
+  --secondary-container: #6a63e5;
+
+  --background: #f8f9fb;
+
+  --surface-card: #ffffff;
+  --surface-container-lowest: #ffffff;
+  --surface-container-low: #f2f4f6;
+  --surface-container: #edeef0;
+  --surface-container-high: #e7e8ea;
+  --surface-container-highest: #e1e2e4;
+
+  --text-primary: #18181b;
+  --text-secondary: #52525b;
+  --text-subtle: #a1a1aa;
+
+  --border-default: #e4e4e7;
+  --border-subtle: #f0f0f2;
+
+  --success: #16a34a;
+  --error: #dc2626;
+  --warning: #d97706;
+  --info: #2563eb;
+
+  --interactive-active-bg: #f5f4ff;
+
+  --radius: 4px;
+  --radius-lg: 8px;
+  --radius-xl: 12px;
+
+  --shadow-card: 0 1px 2px rgba(24, 24, 27, 0.03);
+  --shadow-hover: 0 4px 12px rgba(24, 24, 27, 0.06);
+
+  --font-sans:
+    Geist, Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+
+  --font-mono:
+    "JetBrains Mono", "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+}
+
+/* ========================================
+   Global Reset
+======================================== */
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  background: var(--background);
+}
+
+body {
+  background: var(--background);
+  color: var(--text-primary);
+
+  font-family: var(--font-sans);
+  font-size: 13px;
+
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+button,
+input,
+textarea,
+select {
+  font-family: inherit;
+}
+
+button {
+  border: 0;
+}
+
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: 2px solid rgba(66, 65, 188, 0.25);
+  outline-offset: 1px;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* ========================================
+   App
+======================================== */
+
+.df-app {
+  display: flex;
+  flex-direction: column;
+
+  width: 100%;
+  height: 100%;
+
+  min-width: 1180px;
+
+  overflow: hidden;
+
+  background: var(--background);
+}
+
+/* ========================================
+   Command Strip
+======================================== */
+
+.df-command-strip {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  flex-shrink: 0;
+
+  height: 64px;
+  padding: 0 20px;
+
+  border-bottom: 1px solid var(--border-default);
+
+  background: var(--surface-card);
+
+  box-shadow: 0 1px 2px rgba(24, 24, 27, 0.03);
+
+  z-index: 20;
+}
+
+.df-command-left {
+  display: flex;
+  align-items: center;
+
+  min-width: 0;
+}
+
+.df-command-status {
+  position: relative;
+
+  width: 8px;
+  height: 8px;
+
+  margin-right: 10px;
+
+  border-radius: 50%;
+
+  background: var(--success);
+
+  box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.08);
+}
+
+.df-command-status::after {
+  content: "";
+
+  position: absolute;
+
+  inset: -3px;
+
+  border-radius: 50%;
+
+  border: 1px solid rgba(22, 163, 74, 0.25);
+
+  animation: df-pulse 2s infinite;
+}
+
+@keyframes df-pulse {
+  0% {
+    transform: scale(0.8);
+    opacity: 0.8;
+  }
+
+  70% {
+    transform: scale(1.5);
+    opacity: 0;
+  }
+
+  100% {
+    transform: scale(1.5);
+    opacity: 0;
+  }
+}
+
+.df-command-schema {
+  display: flex;
+  align-items: center;
+
+  min-width: 0;
+}
+
+.df-command-schema-name {
+  overflow: hidden;
+
+  color: var(--text-primary);
+
+  font-size: 14px;
+  font-weight: 650;
+
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.df-command-version {
+  margin-left: 8px;
+
+  color: var(--text-subtle);
+
+  font-family: var(--font-mono);
+  font-size: 10px;
+}
+
+.df-command-meta {
+  margin-left: 14px;
+
+  color: var(--text-subtle);
+
+  font-size: 11px;
+
+  white-space: nowrap;
+}
+
+.df-command-right {
+  display: flex;
+  align-items: center;
+
+  flex-shrink: 0;
+
+  gap: 8px;
+}
+
+.df-batch-group {
+  display: flex;
+  align-items: center;
+
+  padding: 2px;
+
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius);
+
+  background: var(--surface-container-low);
+}
+
+.df-batch-button {
+  height: 28px;
+
+  padding: 0 9px;
+
+  border-radius: 3px;
+
+  background: transparent;
+  color: var(--text-secondary);
+
+  font-family: var(--font-mono);
+  font-size: 10px;
+
+  cursor: pointer;
+}
+
+.df-batch-button:hover {
+  color: var(--primary);
+}
+
+.df-batch-button.is-active {
+  background: var(--surface-card);
+  color: var(--primary);
+
+  box-shadow: 0 1px 2px rgba(24, 24, 27, 0.08);
+}
+
+.df-batch-button.is-large {
+  position: relative;
+}
+
+.df-batch-button.is-large::after {
+  content: "10万";
+
+  position: absolute;
+
+  top: -7px;
+  right: -5px;
+
+  padding: 1px 3px;
+
+  border-radius: 3px;
+
+  background: var(--primary);
+  color: #ffffff;
+
+  font-family: var(--font-sans);
+  font-size: 7px;
+  line-height: 11px;
+}
+
+.df-command-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+
+  height: 32px;
+
+  padding: 0 10px;
+
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius);
+
+  background: var(--surface-card);
+  color: var(--text-secondary);
+
+  font-size: 11px;
+
+  cursor: pointer;
+
+  transition:
+    background 0.15s ease,
+    border-color 0.15s ease,
+    color 0.15s ease;
+}
+
+.df-command-action:hover {
+  border-color: var(--primary);
+  background: var(--interactive-active-bg);
+  color: var(--primary);
+}
+
+.df-command-action.primary {
+  border-color: var(--primary);
+
+  background: var(--primary);
+  color: #ffffff;
+}
+
+.df-command-action.primary:hover {
+  border-color: var(--primary-container);
+  background: var(--primary-container);
+}
+
+.df-command-saved {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+
+  color: var(--success);
+
+  font-size: 10px;
+}
+
+.df-command-throughput {
+  display: inline-flex;
+  align-items: center;
+
+  margin-left: 4px;
+
+  color: var(--text-secondary);
+
+  font-family: var(--font-mono);
+  font-size: 10px;
+}
+
+/* ========================================
+   Main Workspace
+======================================== */
+
+.df-workspace {
+  display: grid;
+  grid-template-columns:
+    240px
+    320px
+    320px
+    minmax(0, 1fr);
+
+  gap: 16px;
+
+  flex: 1;
+
+  min-height: 0;
+
+  padding: 16px 20px;
+
+  overflow: hidden;
+}
+
+.df-middle-column {
+  display: flex;
+  flex-direction: column;
+
+  min-width: 0;
+  min-height: 0;
+
+  gap: 16px;
+
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  scrollbar-width: thin;
+}
+
+.df-right-column {
+  display: flex;
+  flex-direction: column;
+
+  min-width: 0;
+  min-height: 0;
+
+  gap: 16px;
+
+  overflow: hidden;
+
+  scrollbar-width: thin;
+  /* border: #16a34a 1px solid; */
+}
+
+.df-data-table {
+  flex: 1;
+
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+}
+
+/* ========================================
+   Common Card
+======================================== */
+
+.df-card {
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-lg);
+
+  background: var(--surface-card);
+
+  box-shadow: var(--shadow-card);
+}
+
+.df-section-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+
+  width: 100%;
+  min-height: 48px;
+
+  padding: 0 0 14px;
+
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.df-section-heading {
+  flex: 1;
+
+  min-width: 0;
+}
+
+.df-section-title {
+  display: flex;
+  align-items: center;
+
+  color: var(--text-primary);
+
+  font-size: 14px;
+  font-weight: 650;
+  line-height: 20px;
+
+  letter-spacing: -0.01em;
+}
+
+.df-section-subtitle {
+  margin-top: 4px;
+
+  color: var(--text-subtle);
+
+  font-size: 11px;
+  font-weight: 400;
+  line-height: 16px;
+}
+
+/* ========================================
+   Asset Panel
+======================================== */
+
+.df-asset-panel {
+  display: flex;
+  flex-direction: column;
+
+  min-width: 0;
+  min-height: 0;
+
+  overflow: hidden;
+
+  border: 1px solid var(--border-default);
+  /* border: solid 1px red; */
+  border-radius: var(--radius-lg);
+
+  background: var(--surface-card);
+}
+
+.df-field-column {
+  display: flex;
+  flex-direction: column;
+
+  min-width: 0;
+  min-height: 0;
+
+  overflow: hidden;
+}
+
+.df-asset-header {
+  flex-shrink: 0;
+
+  padding: 16px;
+
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.df-asset-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  margin-bottom: 12px;
+}
+
+.df-asset-title > span:first-child {
+  color: var(--text-primary);
+
+  font-size: 13px;
+  font-weight: 650;
+}
+
+.df-asset-count {
+  color: var(--text-subtle);
+
+  font-family: var(--font-mono);
+  font-size: 9px;
+}
+
+.df-asset-search .ant-input-affix-wrapper {
+  height: 32px;
+}
+
+.df-asset-content {
+  flex: 1;
+
+  min-height: 0;
+
+  padding: 12px 8px;
+
+  overflow-y: auto;
+}
+
+.df-asset-section-title {
+  padding: 7px 8px;
+
+  color: var(--text-subtle);
+
+  font-size: 10px;
+  font-weight: 600;
+
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.df-asset-section-title + .df-asset-item {
+  margin-top: 2px;
+}
+
+.df-asset-item {
+  padding: 9px 10px;
+
+  border-radius: var(--radius);
+
+  cursor: pointer;
+
+  transition:
+    background 0.15s ease,
+    color 0.15s ease;
+}
+
+.df-asset-item:hover {
+  background: var(--surface-container-low);
+}
+
+.df-asset-item.is-active {
+  background: var(--interactive-active-bg);
+}
+
+.df-asset-item.is-active .df-asset-name {
+  color: var(--primary);
+  font-weight: 600;
+}
+
+.df-asset-name {
+  overflow: hidden;
+
+  color: var(--text-secondary);
+
+  font-size: 11px;
+  line-height: 18px;
+
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.df-asset-meta {
+  margin-top: 2px;
+
+  color: var(--text-subtle);
+
+  font-family: var(--font-mono);
+  font-size: 9px;
+  line-height: 14px;
+}
+
+.df-asset-import {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+
+  flex-shrink: 0;
+
+  height: 42px;
+
+  margin: 8px;
+
+  border: 1px dashed var(--border-default);
+  border-radius: var(--radius);
+
+  background: transparent;
+  color: var(--text-subtle);
+
+  font-size: 10px;
+
+  cursor: pointer;
+}
+
+.df-asset-import:hover {
+  border-color: var(--primary);
+
+  background: var(--interactive-active-bg);
+
+  color: var(--primary);
+}
+
+.df-asset-import .anticon {
+  font-size: 11px;
+}
+
+/* ========================================
+   Field Composer
+======================================== */
+
+.df-field-composer {
+  /* flex-shrink: 1; */
+  height: 100%;
+  padding: 16px;
+}
+
+.df-add-field-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+
+  height: 30px;
+
+  margin-left: 12px;
+  padding: 0 10px;
+
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius);
+
+  background: var(--surface-card);
+  color: var(--text-secondary);
+
+  font-size: 11px;
+  font-weight: 500;
+
+  cursor: pointer;
+
+  transition:
+    color 0.15s ease,
+    background-color 0.15s ease,
+    border-color 0.15s ease;
+}
+
+.df-add-field-button:hover {
+  border-color: var(--primary);
+
+  background: var(--interactive-active-bg);
+
+  color: var(--primary);
+}
+
+.df-add-field-button:active {
+  transform: translateY(1px);
+}
+
+.df-add-field-button .anticon {
+  margin-right: 5px;
+
+  font-size: 11px;
+}
+
+.df-field-list {
+  width: 100%;
+  margin-top: 12px;
+}
+
+.df-field-list .ant-list,
+.df-field-list .ant-list-items {
+  width: 100%;
+}
+
+.df-field-list .ant-list-item {
+  padding: 0 !important;
+
+  border: 0 !important;
+}
+
+/* ========================================
+   Field Item
+======================================== */
+
+.df-field-item {
+  display: flex;
+  align-items: center;
+
+  width: 100%;
+  min-height: 58px;
+
+  /* margin-bottom: 6px; */
+  padding: 8px 10px;
+
+  border: 1px solid transparent;
+  border-radius: var(--radius);
+
+  background: var(--surface-card);
+
+  cursor: pointer;
+
+  transition:
+    border-color 0.15s ease,
+    background 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.df-field-item:hover {
+  border-color: var(--border-default);
+
+  background: var(--surface-container-low);
+}
+
+.df-field-item.is-selected {
+  border-color: rgba(66, 65, 188, 0.22);
+
+  background: var(--interactive-active-bg);
+
+  box-shadow: inset 2px 0 0 var(--primary);
+}
+
+.df-field-item.is-dragging {
+  opacity: 0.92;
+
+  background: var(--surface-card);
+
+  box-shadow: 0 8px 20px rgba(24, 24, 27, 0.12);
+}
+
+.df-field-drag {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 24px;
+  height: 28px;
+
+  flex-shrink: 0;
+
+  margin: 0;
+  padding: 0;
+
+  border: 0;
+  outline: none;
+
+  background: transparent;
+  color: var(--text-subtle);
+
+  cursor: grab;
+}
+
+.df-field-drag:hover {
+  color: var(--text-secondary);
+}
+
+.df-field-drag:active {
+  cursor: grabbing;
+}
+
+.df-field-drag .anticon {
+  font-size: 14px;
+}
+
+.df-field-main {
+  flex: 1;
+
+  min-width: 0;
+
+  margin-left: 4px;
+}
+
+.df-field-title {
+  display: flex;
+  align-items: center;
+
+  min-width: 0;
+
+  gap: 7px;
+}
+
+.df-field-name {
+  overflow: hidden;
+
+  color: var(--text-primary);
+
+  font-size: 12px;
+  font-weight: 600;
+
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.df-field-key {
+  flex-shrink: 0;
+
+  padding: 2px 5px;
+
+  border-radius: 3px;
+
+  background: var(--surface-container-low);
+
+  color: var(--text-subtle);
+
+  font-family: var(--font-mono);
+  font-size: 8px;
+}
+
+.df-field-description {
+  overflow: hidden;
+
+  margin-top: 3px;
+
+  color: var(--text-subtle);
+
+  font-size: 9px;
+  line-height: 14px;
+
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.df-field-type {
+  flex-shrink: 0;
+
+  margin-left: 8px;
+
+  padding: 3px 6px;
+
+  border-radius: 3px;
+
+  background: var(--surface-container-low);
+
+  color: var(--text-secondary);
+
+  font-family: var(--font-mono);
+  font-size: 8px;
+}
+
+/* ========================================
+   Rule Inspector
+======================================== */
+
+.df-rule-inspector {
+  flex-shrink: 0;
+  height: 100%;
+  padding: 16px;
+}
+
+.df-rule-inspector .df-section-header {
+  align-items: flex-start;
+}
+
+.df-rule-body {
+  padding-top: 16px;
+  /* border: solid 1px red; */
+  overflow-y: auto;
+}
+
+.df-rule-field-name {
+  display: flex;
+  align-items: center;
+
+  gap: 8px;
+
+  margin-bottom: 16px;
+
+  color: var(--text-primary);
+
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.df-rule-field-name code {
+  padding: 2px 6px;
+
+  border-radius: 3px;
+
+  background: var(--surface-container-low);
+
+  color: var(--text-subtle);
+
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 400;
+}
+
+.df-rule-status {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+
+  height: 24px;
+
+  margin-left: 12px;
+  padding: 0 8px;
+
+  border-radius: 12px;
+
+  background: #f0fdf4;
+  color: var(--success);
+
+  font-size: 10px;
+  font-weight: 500;
+
+  white-space: nowrap;
+}
+
+.df-rule-status .anticon {
+  margin-right: 4px;
+
+  font-size: 10px;
+}
+
+.df-form-item {
+  margin-bottom: 14px;
+}
+
+.df-form-item > label {
+  display: block;
+
+  margin-bottom: 6px;
+
+  color: var(--text-secondary);
+
+  font-size: 10px;
+  font-weight: 500;
+}
+
+.df-rule-switches {
+  margin: 18px 0;
+  padding: 4px 0;
+
+  border-top: 1px solid var(--border-subtle);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.df-rule-switch-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  min-height: 52px;
+}
+
+.df-rule-switch-item + .df-rule-switch-item {
+  border-top: 1px solid var(--border-subtle);
+}
+
+.df-rule-switch-item > div:first-child {
+  min-width: 0;
+}
+
+.df-rule-switch-item > div:first-child > div {
+  color: var(--text-primary);
+
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.df-rule-switch-item > div:first-child > span {
+  display: block;
+
+  margin-top: 2px;
+
+  color: var(--text-subtle);
+
+  font-size: 9px;
+}
+
+.df-empty-inspector {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 220px;
+
+  color: var(--text-subtle);
+
+  text-align: center;
+}
+
+.df-empty-inspector .anticon {
+  margin-bottom: 10px;
+
+  color: var(--primary);
+
+  font-size: 22px;
+}
+
+.df-empty-inspector > div {
+  color: var(--text-secondary);
+
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.df-empty-inspector > span {
+  margin-top: 4px;
+
+  font-size: 11px;
+}
+
+/* ========================================
+   Data Stream
+======================================== */
+
+.df-data-stream {
+  display: flex;
+  flex-direction: column;
+
+  /* flex: 1 1 0; */
+
+  min-width: 0;
+  min-height: 0;
+
+  padding: 16px;
+
+  overflow: hidden;
+  /* border: solid 2px saddlebrown; */
+}
+
+.df-data-stream .df-section-header {
+  align-items: flex-start;
+
+  flex-shrink: 0;
+}
+
+.df-data-stream .df-section-heading {
+  min-width: 0;
+}
+
+.df-data-stream .df-section-title {
+  font-size: 14px;
+}
+
+.df-data-stream .df-section-subtitle {
+  white-space: nowrap;
+}
+
+.df-data-toolbar {
+  display: flex;
+  align-items: center;
+
+  flex-shrink: 0;
+
+  gap: 10px;
+
+  margin: 12px 0;
+}
+
+.df-data-toolbar .ant-input-affix-wrapper {
+  width: 240px;
+  height: 30px;
+}
+
+.df-data-count {
+  margin-left: auto;
+
+  color: var(--text-subtle);
+
+  font-family: var(--font-mono);
+  font-size: 9px;
+}
+
+.df-data-stream .ant-table-wrapper {
+  flex: 1;
+
+  min-height: 0;
+}
+
+.df-data-stream .ant-table {
+  font-size: 10px;
+}
+
+.df-data-stream .ant-table-thead > tr > th {
+  height: 34px;
+
+  padding: 7px 10px;
+
+  background: var(--surface-container-low);
+
+  color: var(--text-secondary);
+
+  font-size: 9px;
+  font-weight: 600;
+
+  white-space: nowrap;
+}
+
+.df-data-stream .ant-table-tbody > tr > td {
+  height: 34px;
+
+  padding: 7px 10px;
+
+  color: var(--text-secondary);
+
+  font-family: var(--font-mono);
+  font-size: 9px;
+
+  white-space: nowrap;
+}
+
+.df-data-stream .ant-table-tbody > tr:hover > td {
+  background: var(--interactive-active-bg) !important;
+}
+
+/* ========================================
+   Export Pipeline
+======================================== */
+
+.df-export-pipeline {
+  flex: 0 0 auto;
+
+  min-width: 0;
+
+  padding: 16px;
+
+  overflow: hidden;
+}
+
+.df-export-formats {
+  display: grid;
+
+  grid-template-columns: (4, minmax(0, 1fr));
+
+  gap: 8px;
+
+  margin-top: 14px;
+}
+
+.df-export-format {
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: center;
+
+  min-height: 58px;
+
+  padding: 8px;
+
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius);
+
+  background: var(--surface-card);
+
+  cursor: pointer;
+
+  transition:
+    border-color 0.15s ease,
+    background 0.15s ease;
+}
+
+.df-export-format:hover {
+  border-color: rgba(66, 65, 188, 0.35);
+
+  background: var(--interactive-active-bg);
+}
+
+.df-export-format.is-active {
+  border-color: var(--primary);
+
+  background: var(--interactive-active-bg);
+
+  box-shadow: inset 0 0 0 1px rgba(66, 65, 188, 0.06);
+}
+
+.df-export-format-icon {
+  margin-bottom: 4px;
+
+  color: var(--text-secondary);
+
+  font-size: 16px;
+}
+
+.df-export-format.is-active .df-export-format-icon {
+  color: var(--primary);
+}
+
+.df-export-format-name {
+  color: var(--text-secondary);
+
+  font-family: var(--font-mono);
+  font-size: 9px;
+}
+
+.df-export-status {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  margin-top: 14px;
+  padding: 9px 10px;
+
+  border-radius: var(--radius);
+
+  background: var(--surface-container-low);
+}
+
+.df-export-status-label {
+  color: var(--text-subtle);
+
+  font-size: 9px;
+}
+
+.df-export-status-value {
+  color: var(--success);
+
+  font-family: var(--font-mono);
+  font-size: 9px;
+}
+
+.df-export-options {
+  display: flex;
+  align-items: center;
+
+  gap: 12px;
+
+  margin-top: 10px;
+}
+
+.df-export-option {
+  display: inline-flex;
+  align-items: center;
+
+  color: var(--text-subtle);
+
+  font-size: 9px;
+}
+
+.df-export-option .ant-checkbox {
+  margin-right: 5px;
+}
+
+.df-export-button {
+  width: 100%;
+
+  margin-top: 14px;
+}
+
+/* ========================================
+   Status Bar
+======================================== */
+
+.df-status-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  flex-shrink: 0;
+
+  height: 34px;
+
+  padding: 0 20px;
+
+  border-top: 1px solid var(--border-default);
+
+  background: var(--surface-card);
+
+  color: var(--text-subtle);
+
+  font-family: var(--font-mono);
+  font-size: 9px;
+}
+
+.df-status-left,
+.df-status-right {
+  display: flex;
+  align-items: center;
+
+  gap: 14px;
+}
+
+.df-status-online {
+  display: inline-flex;
+  align-items: center;
+
+  gap: 5px;
+
+  color: var(--success);
+}
+
+.df-status-online::before {
+  content: "";
+
+  width: 5px;
+  height: 5px;
+
+  border-radius: 50%;
+
+  background: var(--success);
+}
+
+.df-status-throughput {
+  color: var(--primary);
+}
+
+/* ========================================
+   Ant Design - Input
+======================================== */
+
+.df-app .ant-input,
+.df-app .ant-input-affix-wrapper {
+  border-color: var(--border-default);
+
+  border-radius: var(--radius);
+
+  background: var(--surface-card);
+
+  color: var(--text-primary);
+
+  box-shadow: none;
+}
+
+.df-app .ant-input-affix-wrapper:hover,
+.df-app .ant-input-affix-wrapper-focused,
+.df-app .ant-input-affix-wrapper:focus-within {
+  border-color: rgba(66, 65, 188, 0.5);
+
+  box-shadow: 0 0 0 2px rgba(66, 65, 188, 0.06);
+}
+
+.df-app .ant-input::placeholder {
+  color: var(--text-subtle);
+}
+
+.df-app .ant-input-prefix {
+  color: var(--text-subtle);
+}
+
+.df-app .ant-input-clear-icon {
+  color: var(--text-subtle);
+}
+
+/* ========================================
+   Ant Design - Select
+======================================== */
+
+.df-app .ant-select-selector {
+  border-color: var(--border-default) !important;
+
+  border-radius: var(--radius) !important;
+
+  background: var(--surface-card) !important;
+
+  box-shadow: none !important;
+}
+
+.df-app .ant-select:hover .ant-select-selector {
+  border-color: rgba(66, 65, 188, 0.5) !important;
+}
+
+.df-app .ant-select-focused .ant-select-selector {
+  border-color: var(--primary) !important;
+
+  box-shadow: 0 0 0 2px rgba(66, 65, 188, 0.06) !important;
+}
+
+.df-app .ant-select-selection-item {
+  color: var(--text-primary);
+
+  font-size: 11px;
+}
+
+.df-app .ant-select-selection-placeholder {
+  color: var(--text-subtle);
+
+  font-size: 11px;
+}
+
+/* ========================================
+   Ant Design - Switch
+======================================== */
+
+.df-app .ant-switch {
+  background: var(--surface-container-high);
+}
+
+.df-app .ant-switch-checked {
+  background: var(--primary);
+}
+
+.df-app .ant-switch:hover:not(.ant-switch-disabled) {
+  background: var(--surface-container-highest);
+}
+
+.df-app .ant-switch-checked:hover:not(.ant-switch-disabled) {
+  background: var(--primary-container);
+}
+
+/* ========================================
+   Ant Design - Button
+======================================== */
+
+.df-app .ant-btn {
+  border-radius: var(--radius);
+
+  font-size: 11px;
+}
+
+.df-app .ant-btn-primary {
+  border-color: var(--primary);
+
+  background: var(--primary);
+
+  box-shadow: none;
+}
+
+.df-app .ant-btn-primary:hover {
+  border-color: var(--primary-container);
+
+  background: var(--primary-container);
+}
+
+/* ========================================
+   Scrollbar
+======================================== */
+.df-middle-column {
+  /* border: solid 1px red; */
+  /* 超出屏幕 显示滑动 */
+  /* overflow-: auto; */
+}
+
+.df-middle-column::-webkit-scrollbar,
+.df-right-column::-webkit-scrollbar,
+.df-asset-content::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.df-middle-column::-webkit-scrollbar-track,
+.df-right-column::-webkit-scrollbar-track,
+.df-asset-content::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.df-middle-column::-webkit-scrollbar-thumb,
+.df-right-column::-webkit-scrollbar-thumb,
+.df-asset-content::-webkit-scrollbar-thumb {
+  border-radius: 6px;
+
+  background: var(--surface-container-high);
+}
+
+.df-middle-column::-webkit-scrollbar-thumb:hover,
+.df-right-column::-webkit-scrollbar-thumb:hover,
+.df-asset-content::-webkit-scrollbar-thumb:hover {
+  background: var(--surface-container-highest);
+}
+
+/* ========================================
+   Utility
+======================================== */
+
+.df-hidden {
+  display: none !important;
+}
+
+.df-mono {
+  font-family: var(--font-mono);
+}
+
+.df-text-subtle {
+  color: var(--text-subtle);
+}
+
+.df-text-secondary {
+  color: var(--text-secondary);
+}
+
+.df-text-primary {
+  color: var(--text-primary);
+}
+
+/* ========================================
+   Responsive
+======================================== */
+
+@media (max-width: 1400px) {
+  .df-workspace {
+    grid-template-columns:
+      240px
+      320px
+      320px
+      minmax(0, 1fr);
+
+    gap: 12px;
+
+    padding: 12px 16px;
+  }
+
+  .df-command-strip {
+    padding: 0 16px;
+  }
+
+  .df-command-meta {
+    display: none;
+  }
+
+  .df-command-action {
+    padding: 0 8px;
+  }
+}
+
+@media (max-width: 1200px) {
+  .df-workspace {
+    grid-template-columns:
+      240px
+      320px
+      320px
+      minmax(0, 1fr);
+  }
+
+  .df-command-right .df-command-action:nth-of-type(2) {
+    display: none;
+  }
+}
+
+/* Header */
+.df-card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+
+  min-height: 42px;
+  padding-bottom: 12px;
+
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.df-card-title {
+  color: var(--text-primary);
+  font-size: 14px;
+  font-weight: 650;
+  line-height: 20px;
+  letter-spacing: -0.01em;
+}
+
+.df-export-subtitle {
+  margin-top: 3px;
+
+  color: var(--text-subtle);
+  font-family: var(--font-mono);
+  font-size: 9px;
+  line-height: 14px;
+  letter-spacing: 0.02em;
+}
+
+.df-export-status {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  height: 20px;
+  padding: 0 7px;
+
+  border: 1px solid rgba(22, 163, 74, 0.18);
+  border-radius: 4px;
+
+  background: rgba(22, 163, 74, 0.06);
+
+  color: var(--success);
+
+  font-family: var(--font-mono);
+  font-size: 8px;
+  font-weight: 650;
+  line-height: 20px;
+  letter-spacing: 0.06em;
+}
+
+/* ========================================
+   Export Options
+======================================== */
+
+.df-export-options {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+
+  gap: 14px;
+
+  margin-top: 13px;
+}
+
+.df-export-options .ant-checkbox-wrapper {
+  margin: 0;
+
+  color: var(--text-secondary);
+
+  font-size: 10px;
+  line-height: 18px;
+}
+
+.df-export-options .ant-checkbox {
+  top: 0;
+}
+
+.df-export-options .ant-checkbox-inner {
+  width: 13px;
+  height: 13px;
+
+  border-color: var(--border-default);
+  border-radius: 3px;
+}
+
+.df-export-options .ant-checkbox-checked .ant-checkbox-inner {
+  border-color: var(--primary);
+  background: var(--primary);
+}
+
+.df-export-options .ant-checkbox-checked .ant-checkbox-inner::after {
+  width: 4px;
+  height: 7px;
+}
+
+/* ========================================
+   Format List
+======================================== */
+
+.df-format-list {
+  display: grid;
+
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+
+  gap: 7px;
+
+  margin-top: 13px;
+}
+
+/* Format Card */
+.df-format-card {
+  position: relative;
+
+  display: flex;
+  align-items: center;
+
+  min-width: 0;
+  min-height: 54px;
+
+  padding: 8px;
+
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius);
+
+  outline: none;
+
+  background: var(--surface-card);
+
+  color: var(--text-secondary);
+
+  text-align: left;
+
+  cursor: pointer;
+
+  transition:
+    border-color 0.15s ease,
+    background-color 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.df-format-card:hover {
+  border-color: rgba(66, 65, 188, 0.35);
+
+  background: var(--interactive-active-bg);
+}
+
+.df-format-card.is-selected {
+  border-color: var(--primary);
+
+  background: var(--interactive-active-bg);
+
+  box-shadow: inset 0 0 0 1px rgba(66, 65, 188, 0.08);
+}
+
+/* Material icon */
+.df-format-card .material-symbols-outlined {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 24px;
+  height: 24px;
+
+  margin-right: 6px;
+
+  flex-shrink: 0;
+
+  color: var(--text-subtle);
+
+  font-size: 17px;
+}
+
+.df-format-card.is-selected .material-symbols-outlined {
+  color: var(--primary);
+}
+
+/* Format title */
+.df-format-title {
+  overflow: hidden;
+
+  color: var(--text-secondary);
+
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 600;
+  line-height: 14px;
+
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.df-format-card.is-selected .df-format-title {
+  color: var(--primary);
+}
+
+/* Extension */
+.df-format-ext {
+  margin-top: 1px;
+
+  color: var(--text-subtle);
+
+  font-family: var(--font-mono);
+  font-size: 8px;
+  line-height: 12px;
+}
+
+/* ========================================
+   File Size
+======================================== */
+
+.df-export-size {
+  display: flex;
+  align-items: center;
+
+  gap: 5px;
+
+  margin-top: 11px;
+
+  color: var(--text-subtle);
+
+  font-size: 9px;
+  line-height: 16px;
+}
+
+.df-export-size strong {
+  color: var(--text-secondary);
+
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 600;
+}
+
+.df-export-size span:last-child {
+  color: var(--text-subtle);
+}
+
+/* ========================================
+   cURL / Mock
+======================================== */
+
+.df-export-mode {
+  display: inline-flex;
+  align-items: center;
+
+  margin-top: 10px;
+
+  padding: 2px;
+
+  border: 1px solid var(--border-subtle);
+  border-radius: 5px;
+
+  background: var(--surface-container-low);
+}
+
+.df-mode-button {
+  height: 24px;
+
+  padding: 0 10px;
+
+  border: 0;
+  border-radius: 3px;
+
+  outline: none;
+
+  background: transparent;
+
+  color: var(--text-subtle);
+
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 500;
+
+  cursor: pointer;
+
+  transition:
+    color 0.15s ease,
+    background-color 0.15s ease;
+}
+
+.df-mode-button:hover {
+  color: var(--text-secondary);
+}
+
+.df-mode-button.is-active {
+  background: var(--surface-card);
+
+  color: var(--text-primary);
+
+  box-shadow: 0 1px 2px rgba(24, 24, 27, 0.06);
+}
+
+/* ========================================
+   Export Button
+======================================== */
+
+.df-export-button {
+  position: relative;
+
+  width: 100% !important;
+  height: 36px !important;
+
+  margin-top: 12px;
+
+  border-radius: var(--radius) !important;
+
+  border-color: var(--primary) !important;
+  background: var(--primary) !important;
+
+  box-shadow: none !important;
+
+  font-size: 10px !important;
+  font-weight: 550 !important;
+}
+
+.df-export-button:hover,
+.df-export-button:focus {
+  border-color: var(--primary-container) !important;
+  background: var(--primary-container) !important;
+}
+
+.df-export-button.ant-btn-loading {
+  opacity: 0.92;
+}
+
+/* 快捷键 */
+.df-button-shortcut {
+  position: absolute;
+
+  right: 10px;
+
+  padding-left: 8px;
+
+  color: rgba(255, 255, 255, 0.65);
+
+  font-family: var(--font-mono);
+  font-size: 8px;
+  font-weight: 500;
+}
+
+/* ========================================
+   Exporting 状态
+======================================== */
+
+.df-export-pipeline:has(.df-export-button.ant-btn-loading) {
+  border-color: rgba(66, 65, 188, 0.25);
+
+  box-shadow: 0 0 0 3px rgba(66, 65, 188, 0.04);
+}
+
+/* ========================================
+   Responsive
+======================================== */
+
+@media (max-width: 1200px) {
+  .df-format-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 768px) {
+  .df-export-options {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
+
+  .df-format-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* ⭐ 新增：规则检查器底部操作区 */
+.df-rule-actions {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding-top: 16px;
+  margin-top: 16px;
+  border-top: 1px solid var(--border);
+}
+
+.df-rule-actions .ant-btn {
+  flex: 1;
+}
