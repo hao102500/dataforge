@@ -70,7 +70,6 @@ export default function CommandStrip({
           {/* <span>HR Staff Master</span> */}
         </div>
 
-        {/* 部署状态 */}
         <DeployStatus />
 
         <span className="df-version">v2.4.1</span>

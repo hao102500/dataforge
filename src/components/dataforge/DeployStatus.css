@@ -12,19 +12,13 @@
 /* 基础 */
 
 .df-deploy-dot {
-
   position: relative;
-
+  display: inline-block;
   width: 8px;
-
   height: 8px;
-
   margin-right: 8px;
-
   border-radius: 50%;
-
   background: #9ca3af;
-
 }
 
 
@@ -34,19 +28,12 @@
  */
 
 .df-deploy-dot::after {
-
   content: "";
-
   position: absolute;
-
   inset: -3px;
-
   border-radius: 50%;
-
   border: 1px solid rgba(156,163,175,.25);
-
   animation: df-deploy-pulse 2s infinite;
-
 }
 
 
@@ -56,16 +43,12 @@
  */
 
 .df-deploy-dot.waiting {
-
   background:#9ca3af;
-
 }
 
 
 .df-deploy-dot.waiting::after {
-
   border-color:rgba(156,163,175,.25);
-
 }
 
 
@@ -75,16 +58,12 @@
  */
 
 .df-deploy-dot.queued {
-
   background:#f59e0b;
-
 }
 
 
 .df-deploy-dot.queued::after {
-
   border-color:rgba(245,158,11,.3);
-
 }
 
 
@@ -94,16 +73,12 @@
  */
 
 .df-deploy-dot.building {
-
   background:#f59e0b;
-
 }
 
 
 .df-deploy-dot.building::after {
-
   border-color:rgba(245,158,11,.3);
-
 }
 
 
@@ -113,16 +88,12 @@
  */
 
 .df-deploy-dot.success {
-
   background:#16a34a;
-
 }
 
 
 .df-deploy-dot.success::after {
-
   border-color:rgba(22,163,74,.25);
-
 }
 
 
@@ -132,16 +103,12 @@
  */
 
 .df-deploy-dot.failed {
-
   background:#dc2626;
-
 }
 
 
 .df-deploy-dot.failed::after {
-
   border-color:rgba(220,38,38,.25);
-
 }
 
 
