@@ -56,7 +56,11 @@ export default function DataStream({ fields = [], data = [] }) {
         </div>
 
         {/* <Button type="text" icon={<ReloadOutlined />} /> */}
-        <Input
+        <div className="df-data-toolbar">
+
+        <span className="df-data-count">仅展示前 {filteredData.length} 条样本数据</span>
+      </div>
+        {/* <Input
           style={{ width: 180 }}
           size="small"
           value={keyword}
@@ -64,20 +68,10 @@ export default function DataStream({ fields = [], data = [] }) {
           prefix={<SearchOutlined />}
           placeholder="搜索数据..."
           allowClear
-        />
+        /> */}
       </div>
 
-      {/* <div className="df-data-toolbar">
-        <Input
-          value={keyword}
-          onChange={(event) => setKeyword(event.target.value)}
-          prefix={<SearchOutlined />}
-          placeholder="搜索数据..."
-          allowClear
-        />
-
-        <span className="df-data-count">{filteredData.length} 条</span>
-      </div> */}
+      
 
       <div className="df-data-table">
         <Table

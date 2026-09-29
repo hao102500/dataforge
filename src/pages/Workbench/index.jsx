@@ -14,49 +14,22 @@ import DataStream from "../../components/dataforge/DataStream";
 
 import ExportPipeline from "../../components/dataforge/ExportPipeline";
 
-import { generateData } from "../../core/generator";
+// ⭐ 删除
+// import { generateData } from "../../core/generator";
+
+// ⭐ 新增
+// Worker生成入口
+import { generateByWorker } from "../../core/generator/workerClient";
+
 import { convertTemplateFields } from "../../core/schema/convertTemplate";
+
+import { saveSchema } from "@/core/schema/schemaStore";
 
 import "./index.css";
 
 const DEFAULT_BATCH = 1000;
 
 const PREVIEW_COUNT = 100;
-
-/**
- * Generator 描述
- */
-function getGeneratorDescription(generator) {
-  switch (generator.type) {
-    case "faker":
-      return "Faker · 中文姓名";
-
-    case "phone":
-      return "中国大陆 11 位手机号";
-
-    case "idcard":
-      return "18 位身份证号";
-
-    case "bankcard":
-      return "银行卡号";
-
-    case "random":
-      return `随机 ${generator.min}-${generator.max}`;
-
-    case "enum":
-      return generator.values.join("、");
-
-    case "sequence":
-      return "序列递增";
-
-    case "date":
-      return "日期范围生成";
-
-    default:
-      return "固定值";
-  }
-}
-
 
 export default function Workbench() {
   /**
@@ -65,7 +38,12 @@ export default function Workbench() {
   const [fields, setFields] = useState(initialFields);
 
   /**
-   * 当前 Schema 信息
+   * 吞吐率
+   */
+  const [throughput, setThroughput] = useState(0);
+
+  /**
+   * Schema信息
    */
   const [schemaInfo, setSchemaInfo] = useState({
     name: "员工薪资与档案",
@@ -78,23 +56,57 @@ export default function Workbench() {
   });
 
   /**
-   * 当前选中字段
+   * 当前字段
    */
   const [selectedFieldKey, setSelectedFieldKey] = useState(
     initialFields[0]?.key,
   );
 
   /**
-   * 生成数量
+   * 数量
    */
   const [batch, setBatch] = useState(DEFAULT_BATCH);
 
   /**
    * 生成数据
+   *
+   * ⭐ 修改
+   *
+   * Worker异步
+   * 所以不能初始化生成
    */
-  const [generatedData, setGeneratedData] = useState(() => {
-    return generateData(initialFields, DEFAULT_BATCH);
-  });
+  const [generatedData, setGeneratedData] = useState([]);
+
+  /**
+   * ⭐ 新增
+   *
+   * 统一Worker生成入口
+   *
+   */
+  const generateWithWorker = async (nextFields, count) => {
+    const start = performance.now();
+
+    const data = await generateByWorker(nextFields, count);
+
+    const end = performance.now();
+
+    const seconds = (end - start) / 1000;
+
+    const speed = seconds > 0 ? Math.floor(count / seconds) : 0;
+
+    setThroughput(speed);
+
+    setGeneratedData(data);
+
+    return data;
+  };
+
+  /**
+   * 页面初始化生成默认数据
+   */
+  React.useEffect(() => {
+    generateWithWorker(initialFields, DEFAULT_BATCH);
+  }, []);
 
   /**
    * 当前字段
@@ -104,47 +116,22 @@ export default function Workbench() {
   }, [fields, selectedFieldKey]);
 
   /**
-   * ==================================
-   *
-   * ⭐ Schema统一加载入口
-   *
-   * 默认 Schema
-   * 预置模板
-   *
-   * 都走这里
-   *
-   * ==================================
+   * Schema加载
    */
   const loadSchema = (nextFields, info) => {
-    /**
-     * 更新字段
-     */
     setFields(nextFields);
 
-    /**
-     * 默认选中第一列
-     */
     setSelectedFieldKey(nextFields[0]?.key);
 
-    /**
-     * 更新顶部信息
-     */
     setSchemaInfo(info);
 
-    /**
-     * 重新生成数据
-     */
-    const data = generateData(nextFields, batch);
-
-    setGeneratedData(data);
+    // ⭐ 修改
+    // 原 generateData 改成 Worker
+    generateWithWorker(nextFields, batch);
   };
 
   /**
-   * ==================================
-   *
-   * ⭐ 点击预置模板
-   *
-   * ==================================
+   * 选择模板
    */
   const handleSelectTemplate = (template) => {
     const nextFields = convertTemplateFields(template);
@@ -165,13 +152,7 @@ export default function Workbench() {
   };
 
   /**
-   * ==================================
-   *
-   * ⭐ 点击默认 Schema
-   *
-   * 员工薪资与档案
-   *
-   * ==================================
+   * 默认Schema
    */
   const handleSelectDefault = () => {
     loadSchema(
@@ -190,27 +171,25 @@ export default function Workbench() {
   };
 
   /**
-   * 顶部重新生成
+   * 重新生成
    */
   const handleRegenerate = () => {
-    const data = generateData(fields, batch);
-
-    setGeneratedData(data);
+    // ⭐ 修改
+    generateWithWorker(fields, batch);
   };
 
   /**
-   * 修改批量数量
+   * 修改数量
    */
   const handleBatchChange = (value) => {
     setBatch(value);
 
-    const data = generateData(fields, value);
-
-    setGeneratedData(data);
+    // ⭐ 修改
+    generateWithWorker(fields, value);
   };
 
   /**
-   * 字段拖动
+   * 字段变化
    */
   const handleFieldsChange = (nextFields) => {
     setFields(nextFields);
@@ -233,13 +212,27 @@ export default function Workbench() {
 
     setFields(nextFields);
 
-    const data = generateData(nextFields, batch);
-
-    setGeneratedData(data);
+    // ⭐ 修改
+    generateWithWorker(nextFields, batch);
   };
 
   /**
-   * 预览数据
+   * 保存Schema
+   */
+  const handleSaveSchema = () => {
+    saveSchema({
+      id: schemaInfo.code,
+
+      name: schemaInfo.name,
+
+      version: schemaInfo.version,
+
+      fields,
+    });
+  };
+
+  /**
+   * 预览100条
    */
   const previewData = useMemo(() => {
     return generatedData.slice(0, PREVIEW_COUNT);
@@ -253,6 +246,8 @@ export default function Workbench() {
         onRegenerate={handleRegenerate}
         schemaInfo={schemaInfo}
         fieldCount={fields.length}
+        throughput={throughput}
+        onSaveSchema={handleSaveSchema}
       />
 
       <div className="df-workspace">

@@ -10,8 +10,10 @@ export default function CommandStrip({
   batch = 1000,
   onBatchChange,
   onRegenerate,
+  onSaveSchema,
   schemaInfo,
-  fieldCount = 0
+  fieldCount = 0,
+  throughput = 0,
 }) {
   const [regenerating, setRegenerating] = useState(false);
 
@@ -124,9 +126,14 @@ export default function CommandStrip({
           DDL 逆向
         </Button>
 
-        <span className="df-saved">Saved</span>
+        {/* <span className="df-saved">Saved</span> */}
+        <Button type="text" className="df-command-button" onClick={onSaveSchema}>
+          保存
+        </Button>
 
-        <span className="df-throughput">86,400 rec/s</span>
+        <span className="df-throughput">
+          {throughput > 0 ? `${throughput.toLocaleString()} rec/s` : "Ready"}
+        </span>
       </div>
     </header>
   );

@@ -324,247 +324,34 @@ export function exportExcel(data, fields, filename = "dataforge.xlsx") {
 }
 
 /**
+ * SQL 字符串转义
+ */
+function escapeSQL(value) {
+  if (value === null || value === undefined) {
+    return "NULL";
+  }
+
+  const text = String(value);
+
+  return "'" + text.replace(/'/g, "''") + "'";
+}
+
+/**
  * 判断是否为 SQL 数字
  */
 function isSQLNumber(value) {
   return typeof value === "number" && isFinite(value);
 }
 
-// 驼峰转下划线
-function camelToSnake(str) {
-  return String(str).replace(/[A-Z]/g, function (letter) {
-    return "_" + letter.toLowerCase();
-  });
-}
-
 /**
- * SQL 转义
- */
-function escapeSQL(value) {
-  if (value === null || value === undefined || value === "") {
-    return "NULL";
-  }
-
-  return "'" + String(value).replace(/\\/g, "\\\\").replace(/'/g, "''") + "'";
-}
-
-/**
- * ===============================
+ * SQL INSERT 导出
  *
- * 根据字段规则生成 Mysql 类型
+ * 示例：
  *
- * ⭐ 修改
- *
- * ===============================
- */
-function getSQLType(field) {
-  const key = String(getFieldKey(field)).toLowerCase();
-
-  const label = String(getFieldLabel(field));
-
-  const generator = field.generator || {};
-
-  /**
-   * 手机号
-   */
-  if (key.includes("phone") || label.includes("手机")) {
-    return "varchar(11)";
-  }
-
-  /**
-   * 身份证
-   */
-  if (
-    key.includes("idcard") ||
-    key.includes("id_card") ||
-    label.includes("身份证")
-  ) {
-    return "varchar(18)";
-  }
-
-  /**
-   * 银行卡
-   */
-  if (key.includes("bank") || label.includes("银行卡")) {
-    return "varchar(19)";
-  }
-
-  /**
-   * 金额
-   *
-   * salary
-   * amount
-   */
-  if (
-    key.includes("salary") ||
-    key.includes("amount") ||
-    label.includes("工资") ||
-    label.includes("金额") ||
-    generator.randomType === "amount"
-  ) {
-    return "decimal(12,2)";
-  }
-
-  switch (field.type) {
-    case "Integer":
-      return "int";
-
-    case "Decimal":
-      return "decimal(12,2)";
-
-    case "Boolean":
-      return "tinyint(1)";
-
-    case "DateTime":
-      return "datetime";
-
-    default:
-      return "varchar(255)";
-  }
-}
-
-function escapeComment(value) {
-  return String(value || "").replace(/'/g, "''");
-}
-
-function isNumberString(value) {
-  return typeof value === "string" && /^-?\d+(\.\d+)?$/.test(value);
-}
-
-/**
- * ===============================
- *
- * 生成 CREATE TABLE
- *
- * ===============================
- */
-function generateCreateTable(fields, tableName) {
-  const lines = [];
-
-  lines.push("DROP TABLE IF EXISTS `" + tableName + "`;");
-
-  lines.push("");
-
-  lines.push("CREATE TABLE `" + tableName + "` (");
-
-  /**
-   * 主键
-   */
-  lines.push("  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '主键',");
-
-  fields.forEach(function (field) {
-    const column = camelToSnake(getFieldKey(field));
-
-    const type = getSQLType(field);
-
-    lines.push(
-      "  `" +
-        column +
-        "` " +
-        type +
-        " DEFAULT NULL COMMENT '" +
-        escapeComment(getFieldLabel(field)) +
-        "',",
-    );
-  });
-
-  /**
-   * 删除最后一个逗号
-   */
-  const last = lines[lines.length - 1];
-
-  lines[lines.length - 1] = last.replace(",", "");
-
-  lines.push("  PRIMARY KEY (`id`)");
-
-  lines.push(
-    ") ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='DataForge测试数据';",
-  );
-
-  return lines.join("\r\n");
-}
-
-/**
- * ===============================
- *
- * ⭐ 新增
- *
- * 批量 INSERT SQL
- *
- * 原来：
- *
- * INSERT 100次
- *
- * 现在：
- *
- * INSERT INTO xxx VALUES
- * (...),
- * (...);
- *
- * ===============================
- */
-function generateInsertSQL(data, fields, tableName) {
-  const columns = fields.map(function (field) {
-    return "`" + camelToSnake(getFieldKey(field)) + "`";
-  });
-
-  const rows = [];
-
-  data.forEach(function (row) {
-    const values = fields.map(function (field) {
-      const value = getFieldValue(row, field);
-
-      /**
-       * 空值
-       */
-      if (value === null || value === undefined || value === "") {
-        return "NULL";
-      }
-
-      /**
-       * 数字
-       */
-      if ((isSQLNumber(value) || isNumberString(value)) && !isTextField(field)) {
-        return String(value);
-      }
-
-      return escapeSQL(value);
-    });
-
-    rows.push("(" + values.join(",") + ")");
-  });
-
-  return [
-    "INSERT INTO `" + tableName + "`",
-
-    "(",
-
-    columns.join(","),
-
-    ")",
-
-    "VALUES",
-
-    rows.join(",\r\n"),
-
-    ";",
-  ].join("\r\n");
-}
-
-/**
- * ===============================
- *
- * ⭐ 修改
- *
- * SQL 导出
- *
- * 输出：
- *
- * 1. DROP TABLE
- * 2. CREATE TABLE
- * 3. INSERT INTO 批量数据
- *
- * ===============================
+ * INSERT INTO employee
+ * (name, phone)
+ * VALUES
+ * ('张三', '13812345678');
  */
 export function exportSQL(
   data,
@@ -576,51 +363,47 @@ export function exportSQL(
     return;
   }
 
-  /**
-   * ⭐ 可自定义表名
-   *
-   * 默认：
-   *
-   * dataforge_data
-   */
   const tableName = options.tableName || "dataforge_data";
+
+  const columns = fields.map(function (field) {
+    return "`" + getFieldKey(field) + "`";
+  });
 
   const lines = [];
 
-  /**
-   * =========================
-   *
-   * CREATE TABLE
-   *
-   * =========================
-   */
-  lines.push(generateCreateTable(fields, tableName));
-
-  lines.push("");
-
-  lines.push("");
-
-  /**
-   * =========================
-   *
-   * 数据量
-   *
-   * =========================
-   */
   lines.push("-- DataForge SQL Export");
 
   lines.push("-- Records: " + data.length);
 
   lines.push("");
 
-  /**
-   * =========================
-   *
-   * INSERT
-   *
-   * =========================
-   */
-  lines.push(generateInsertSQL(data, fields, tableName));
+  data.forEach(function (row) {
+    const values = fields.map(function (field) {
+      const value = getFieldValue(row, field);
+
+      /**
+       * 数字字段保持数字
+       */
+      if (isSQLNumber(value) && !isTextField(field)) {
+        return String(value);
+      }
+
+      /**
+       * 字符串
+       */
+      return escapeSQL(value);
+    });
+
+    lines.push(
+      "INSERT INTO `" +
+        tableName +
+        "` (" +
+        columns.join(", ") +
+        ") VALUES (" +
+        values.join(", ") +
+        ");",
+    );
+  });
 
   const sql = lines.join("\r\n");
 

@@ -144,22 +144,62 @@ export default function DeployStatus() {
   }
 
   /**
+   * 格式化部署耗时
+   */
+  function formatDuration(start, end) {
+    if (!start || !end) {
+      return "";
+    }
+
+    const diff = new Date(end).getTime() - new Date(start).getTime();
+
+    if (diff <= 0) {
+      return "";
+    }
+
+    const seconds = Math.floor(diff / 1000);
+
+    const minutes = Math.floor(seconds / 60);
+
+    const remainSeconds = seconds % 60;
+
+    if (minutes > 0) {
+      return `${minutes}分${remainSeconds}秒`;
+    }
+
+    return `${remainSeconds}秒`;
+  }
+
+  /**
    * 状态
    */
   const status = getDeployStatus(deploy);
 
-  console.log(deploy);
-  
+  // 格式化部署耗时
+  const duration = formatDuration(
+    deploy?.run_started_at,
+    deploy?.status === "completed" ? deploy.updated_at : new Date(),
+  );
+  // run_number
+  const runNumber = deploy?.run_number || "";
+  // head_branch
+  const headBranch = deploy?.head_branch || "";
 
   return (
     <div className="df-deploy-status">
-      
       {/* {renderStatus()} */}
       <span className={`df-deploy-dot ${status.className}`} />
       <span className="deploy-title">Deploy：</span>
       <span className={`deploy-${status.className}`}>{status.text}</span>
-      <span className="df-command-meta">分支：{deploy?.head_branch}</span>
-      <span className="df-command-meta">构建编号：{deploy?.run_number}</span>
+      {headBranch && (
+        <span className="df-command-meta">分支：{headBranch}</span>
+      )}
+      {runNumber && (
+        <span className="df-command-meta">构建编号：{runNumber}</span>
+      )}
+      {duration && (
+        <span className="df-command-meta">构建耗时：{duration}</span>
+      )}
     </div>
   );
 }
