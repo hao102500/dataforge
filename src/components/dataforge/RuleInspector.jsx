@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Button, Input, InputNumber, Select, Switch, message } from "antd";
 import { CheckCircleOutlined, ThunderboltOutlined } from "@ant-design/icons";
+import {
+  fakerMethodOptions
+} from "@/core/generator/fakerMethods";
 
 const typeOptions = [
   {
@@ -92,17 +95,6 @@ const generatorTypeMap = {
   Enum: ["enum", "constant"],
 };
 
-/**
- * Faker 方法
- *
- * 与 faker.js 保持一致
- */
-const fakerMethodOptions = [
-  {
-    label: "中文姓名",
-    value: "name.chineseName",
-  },
-];
 
 /**
  * 创建 Generator 默认配置

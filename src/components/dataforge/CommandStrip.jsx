@@ -8,10 +8,10 @@ import DeployStatus from "./DeployStatus";
 
 export default function CommandStrip({
   batch = 1000,
-
   onBatchChange,
-
   onRegenerate,
+  schemaInfo,
+  fieldCount = 0
 }) {
   const [regenerating, setRegenerating] = useState(false);
 
@@ -65,16 +65,16 @@ export default function CommandStrip({
         {/* <span className="df-command-status" /> */}
 
         <div className="df-command-title">
-          <strong>员工薪资与档案</strong>
+          <strong>{schemaInfo?.name}</strong>
 
           {/* <span>HR Staff Master</span> */}
         </div>
 
         <DeployStatus />
 
-        <span className="df-version">v2.4.1</span>
+        <span className="df-version">{schemaInfo?.version}</span>
 
-        <span className="df-command-meta">10 字段</span>
+        <span className="df-command-meta">{fieldCount} 字段</span>
 
         <span className="df-command-meta">引用模板：企业人事 / 代发薪资</span>
       </div>
@@ -104,7 +104,7 @@ export default function CommandStrip({
         </div>
 
         <Button
-          type="primary"
+          type="text"
           className="df-command-button"
           disabled={regenerating}
           onClick={handleRegenerate}
@@ -113,14 +113,14 @@ export default function CommandStrip({
           <kbd>⌘R</kbd>
         </Button>
 
-        <Button
+        {/* <Button
           type="primary"
           className="df-command-export"
           icon={<RocketOutlined />}
           onClick={handleExport}
         >
           极速压测导出
-        </Button>
+        </Button> */}
 
         <Button type="text" className="df-command-button">
           DDL 逆向

@@ -1,15 +1,30 @@
-import { generateChineseName } from "./chinese";
+import { fakerMethods } from "./fakerMethods";
 
+
+/**
+ * Faker 数据生成
+ *
+ * method:
+ *
+ * name.chineseName
+ * company.companyName
+ * address.city
+ *
+ */
 export function generateByFaker(method) {
-  const methods = {
-    "name.chineseName": function () {
-      return generateChineseName();
-    },
-  };
 
-  if (methods[method]) {
-    return methods[method]();
+
+  const item = fakerMethods[method];
+
+
+  if (!item) {
+
+    return "";
+
   }
 
-  return "";
+
+  return item.generate();
+
+
 }
