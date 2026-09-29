@@ -1,37 +1,31 @@
-import React, { useState } from "react";
+import { useState, useRef, useEffect } from "react";
+
 import { Button } from "antd";
+
 import { RocketOutlined } from "@ant-design/icons";
 
-const batches = [
-  {
-    value: 100,
-    label: "100",
-  },
-  {
-    value: 1000,
-    label: "1k",
-  },
-  {
-    value: 10000,
-    label: "10k",
-  },
-  {
-    value: 50000,
-    label: "50k",
-  },
-  {
-    value: 100000,
-    label: "100k",
-    badge: "10万",
-  },
-];
+import { batches } from "@/constants/batch";
+
+import CommandStatus from "./CommandStatus";
 
 export default function CommandStrip({
   batch = 1000,
+
   onBatchChange,
+
   onRegenerate,
 }) {
   const [regenerating, setRegenerating] = useState(false);
+
+  const timerRef = useRef(null);
+
+  useEffect(() => {
+    return () => {
+      if (timerRef.current) {
+        clearTimeout(timerRef.current);
+      }
+    };
+  }, []);
 
   /**
    * 重新生成
@@ -43,21 +37,15 @@ export default function CommandStrip({
 
     setRegenerating(true);
 
-    /**
-     * 通知 Workbench 重新生成数据
-     */
     onRegenerate?.();
 
-    /**
-     * 保留原有 500ms 状态
-     */
-    setTimeout(() => {
+    timerRef.current = setTimeout(() => {
       setRegenerating(false);
     }, 500);
   };
 
   /**
-   * 极速压测导出
+   * 导出
    */
   const handleExport = () => {
     const element = document.getElementById("export-dock");
@@ -65,6 +53,7 @@ export default function CommandStrip({
     if (element) {
       element.scrollIntoView({
         behavior: "smooth",
+
         block: "center",
       });
     }
@@ -72,11 +61,13 @@ export default function CommandStrip({
 
   return (
     <header className="df-command-strip">
+      {/* 左侧信息 */}
+
       <div className="df-command-left">
         <span className="df-command-live" />
 
         <div className="df-command-title">
-          <strong>员工薪资与档案11</strong>
+          <strong>员工薪资与档案</strong>
 
           <span>HR Staff Master</span>
         </div>
@@ -88,6 +79,8 @@ export default function CommandStrip({
         <span className="df-command-meta">引用模板：企业人事 / 代发薪资</span>
       </div>
 
+      {/* 右侧操作 */}
+
       <div className="df-command-right">
         <div className="df-batch-group">
           {batches.map((item) => (
@@ -96,9 +89,12 @@ export default function CommandStrip({
               type="button"
               className={[
                 "df-batch-button",
+
                 batch === item.value ? "is-active" : "",
               ].join(" ")}
-              onClick={() => onBatchChange?.(item.value)}
+              onClick={() => {
+                onBatchChange?.(item.value);
+              }}
             >
               {item.label}
 
@@ -108,30 +104,29 @@ export default function CommandStrip({
         </div>
 
         <Button
-          type="text"
+          type="primary"
           className="df-command-button"
-          onClick={handleRegenerate}
           disabled={regenerating}
+          onClick={handleRegenerate}
         >
-          重新生成 <kbd>⌘R</kbd>
+          重新生成
+          <kbd>⌘R</kbd>
         </Button>
 
         <Button
           type="primary"
           className="df-command-export"
-          onClick={handleExport}
           icon={<RocketOutlined />}
+          onClick={handleExport}
         >
           极速压测导出
         </Button>
 
-        <Button type="text" className="df-command-button">
+        {/* <Button type="text" className="df-command-button">
           DDL 逆向
-        </Button>
+        </Button> */}
 
-        <span className="df-saved">Saved</span>
-
-        <span className="df-throughput">86,400 rec/s</span>
+        <CommandStatus />
       </div>
     </header>
   );
