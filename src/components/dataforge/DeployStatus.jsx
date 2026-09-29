@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 
 import { getLatestDeploy } from "@/api/github";
+import { getDeployStatus } from "@/config/deployStatusMap";
 // css
 import "./DeployStatus.css";
 
@@ -142,19 +143,23 @@ export default function DeployStatus() {
     );
   }
 
+  /**
+   * 状态
+   */
+  const status = getDeployStatus(deploy);
+
+  console.log(deploy);
+  
+
   return (
     <div className="df-deploy-status">
-      <span className="deploy-title">【Deploy：</span>
-
-      {renderStatus()}
-
-      {deploy?.head_branch && (
-        <span className="deploy-branch">{deploy.head_branch}</span>
-      )}
-
-      {deploy?.run_number && (
-        <span className="deploy-run">-{deploy.run_number}】</span>
-      )}
+      
+      {/* {renderStatus()} */}
+      <span className={`df-deploy-dot ${status.className}`} />
+      <span className="deploy-title">Deploy：</span>
+      <span className={`deploy-${status.className}`}>{status.text}</span>
+      <span className="df-command-meta">分支：{deploy?.head_branch}</span>
+      <span className="df-command-meta">构建编号：{deploy?.run_number}</span>
     </div>
   );
 }

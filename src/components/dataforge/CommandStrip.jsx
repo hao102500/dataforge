@@ -64,19 +64,17 @@ export default function CommandStrip({
       <div className="df-command-left">
         {/* <span className="df-command-status" /> */}
 
-        <div className="df-command-title">
+        {/* <div className="df-command-title">
           <strong>{schemaInfo?.name}</strong>
-
-          {/* <span>HR Staff Master</span> */}
-        </div>
+        </div> */}
 
         <DeployStatus />
 
-        <span className="df-version">{schemaInfo?.version}</span>
+        {/* <span className="df-version">{schemaInfo?.version}</span> */}
 
-        <span className="df-command-meta">{fieldCount} 字段</span>
+        {/* <span className="df-command-meta">{fieldCount} 字段</span> */}
 
-        <span className="df-command-meta">引用模板：企业人事 / 代发薪资</span>
+        {/* <span className="df-command-meta">引用模板：企业人事 / 代发薪资</span> */}
       </div>
 
       {/* 右侧操作 */}

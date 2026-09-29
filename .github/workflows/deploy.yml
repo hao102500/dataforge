@@ -1,69 +1,57 @@
 name: Deploy Frontend
 
-
 on:
   push:
     branches:
       - main
 
+permissions:
+  contents: read
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
-
     steps:
-
       # 拉代码
       - name: Checkout
         uses: actions/checkout@v4
 
-
-      # 安装Node
+      # Node
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: 20.19.5
-
+          cache: npm
 
       # 安装依赖
       - name: Install
-        run: npm install
-
+        run: npm ci
 
       # 打包
       - name: Build
         run: npm run build
 
-
-      # 部署
-      - name: Deploy
-        uses: actions/upload-pages-artifact@v3
+      # 上传 dist
+      - name: Upload Pages Artifact
+        uses: actions/upload-pages-artifact@v4
         with:
           path: ./dist
 
-
-
   deploy:
-
     needs: build
 
     permissions:
       pages: write
       id-token: write
 
-
     runs-on: ubuntu-latest
-
 
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
 
-
     steps:
-
       - name: Deploy Pages
         id: deployment
         uses: actions/deploy-pages@v4
