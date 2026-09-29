@@ -8,5 +8,6 @@ export default function CommandStatus({
 
       <span className="df-throughput">{throughput}</span>
     </div>
+
   );
 }

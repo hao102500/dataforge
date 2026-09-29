@@ -486,13 +486,11 @@ export default function FieldComposer({
           </div>
 
           <Button
-            type="text"
             size="small"
             icon={<PlusOutlined />}
             onClick={handleOpenAddField}
-          >
-            添加字段
-          </Button>
+          />
+    
         </div>
 
         {/* Field List */}

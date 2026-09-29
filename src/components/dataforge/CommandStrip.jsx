@@ -8,6 +8,11 @@ import { batches } from "@/constants/batch";
 
 import CommandStatus from "./CommandStatus";
 
+// deploy status
+import DeployStatus from "./DeployStatus";
+
+
+
 export default function CommandStrip({
   batch = 1000,
 
@@ -64,13 +69,16 @@ export default function CommandStrip({
       {/* 左侧信息 */}
 
       <div className="df-command-left">
-        {/* <span className="df-command-live" /> */}
+        <span className="df-command-status" />
 
         <div className="df-command-title">
           <strong>员工薪资与档案</strong>
 
-          <span>HR Staff Master</span>
+          {/* <span>HR Staff Master</span> */}
         </div>
+
+        {/* <CommandStatus /> */}
+        <DeployStatus />
 
         <span className="df-version">v2.4.1</span>
 
@@ -126,7 +134,9 @@ export default function CommandStrip({
           DDL 逆向
         </Button> */}
 
-        {/* <CommandStatus /> */}
+        
+
+        
       </div>
     </header>
   );

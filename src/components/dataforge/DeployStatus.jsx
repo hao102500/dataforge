@@ -54,7 +54,7 @@ export default function DeployStatus() {
 
   return (
     <div className="df-deploy-status">
-      <span>🚀 Deploy</span>
+      <span>【🚀 Deploy：</span>
 
       {isRunning && <span className="deploy-running">🟡 Building</span>}
 
@@ -64,9 +64,9 @@ export default function DeployStatus() {
         <span className="deploy-error">🔴 Failed</span>
       )}
 
-      <span>{deploy.head_branch}</span>
+      <span>-{deploy.head_branch}</span>
 
-      <span>#{deploy.run_number}</span>
+      <span>-{deploy.run_number}】</span>
     </div>
   );
 }
