@@ -1,0 +1,179 @@
+/**
+ * Deploy 状态圆点
+ *
+ * waiting   等待检查
+ * queued    排队
+ * building  构建中
+ * success   成功
+ * failed    失败
+ */
+
+
+/* 基础 */
+
+.df-deploy-dot {
+
+  position: relative;
+
+  width: 8px;
+
+  height: 8px;
+
+  margin-right: 8px;
+
+  border-radius: 50%;
+
+  background: #9ca3af;
+
+}
+
+
+
+/**
+ * 外圈动画
+ */
+
+.df-deploy-dot::after {
+
+  content: "";
+
+  position: absolute;
+
+  inset: -3px;
+
+  border-radius: 50%;
+
+  border: 1px solid rgba(156,163,175,.25);
+
+  animation: df-deploy-pulse 2s infinite;
+
+}
+
+
+
+/**
+ * Waiting
+ */
+
+.df-deploy-dot.waiting {
+
+  background:#9ca3af;
+
+}
+
+
+.df-deploy-dot.waiting::after {
+
+  border-color:rgba(156,163,175,.25);
+
+}
+
+
+
+/**
+ * Queued
+ */
+
+.df-deploy-dot.queued {
+
+  background:#f59e0b;
+
+}
+
+
+.df-deploy-dot.queued::after {
+
+  border-color:rgba(245,158,11,.3);
+
+}
+
+
+
+/**
+ * Building
+ */
+
+.df-deploy-dot.building {
+
+  background:#f59e0b;
+
+}
+
+
+.df-deploy-dot.building::after {
+
+  border-color:rgba(245,158,11,.3);
+
+}
+
+
+
+/**
+ * Production
+ */
+
+.df-deploy-dot.success {
+
+  background:#16a34a;
+
+}
+
+
+.df-deploy-dot.success::after {
+
+  border-color:rgba(22,163,74,.25);
+
+}
+
+
+
+/**
+ * Failed
+ */
+
+.df-deploy-dot.failed {
+
+  background:#dc2626;
+
+}
+
+
+.df-deploy-dot.failed::after {
+
+  border-color:rgba(220,38,38,.25);
+
+}
+
+
+
+
+@keyframes df-deploy-pulse {
+
+
+  0% {
+
+    transform:scale(.8);
+
+    opacity:.8;
+
+  }
+
+
+  70% {
+
+    transform:scale(1.5);
+
+    opacity:0;
+
+  }
+
+
+  100% {
+
+    transform:scale(1.5);
+
+    opacity:0;
+
+  }
+
+}

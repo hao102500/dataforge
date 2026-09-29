@@ -2,71 +2,102 @@ import { useEffect, useState } from "react";
 
 import { getLatestDeploy } from "@/api/github";
 
+import "./DeployStatus.css";
+
+const POLL_TIME = 5000;
+
 export default function DeployStatus() {
   const [deploy, setDeploy] = useState(null);
 
   useEffect(() => {
     let timer = null;
 
+    let destroyed = false;
+
     async function load() {
       try {
         const data = await getLatestDeploy();
 
-        setDeploy(data);
+        if (destroyed) {
+          return;
+        }
+
+        setDeploy(data || null);
 
         /**
-         * 如果正在部署
+         * 没有数据
+         * 或正在部署
          * 继续轮询
          */
-        if (data?.status === "in_progress") {
-          timer = setTimeout(
-            load,
-
-            5000,
-          );
+        if (
+          !data ||
+          data.status === "queued" ||
+          data.status === "in_progress"
+        ) {
+          timer = setTimeout(load, POLL_TIME);
         }
       } catch (error) {
-        console.error(
-          "获取部署状态失败",
+        console.error("获取部署状态失败", error);
 
-          error,
-        );
+        timer = setTimeout(load, POLL_TIME);
       }
     }
 
     load();
 
     return () => {
+      destroyed = true;
+
       if (timer) {
         clearTimeout(timer);
       }
     };
   }, []);
 
-  if (!deploy) {
-    return null;
-  }
+  /**
+   * 当前状态
+   */
+  const deployStatus = !deploy
+    ? "waiting"
+    : deploy.status === "queued"
+      ? "queued"
+      : deploy.status === "in_progress"
+        ? "building"
+        : deploy.status === "completed" && deploy.conclusion === "success"
+          ? "success"
+          : "failed";
 
-  const isSuccess =
-    deploy.status === "completed" && deploy.conclusion === "success";
+  const statusMap = {
+    waiting: "⚪ Waiting",
 
-  const isRunning = deploy.status === "in_progress";
+    queued: "🟡 Queued",
+
+    building: "🟡 Building",
+
+    success: "🟢 Production",
+
+    failed: "🔴 Failed",
+  };
 
   return (
     <div className="df-deploy-status">
-      <span>【🚀 Deploy：</span>
+      {/* 状态灯 */}
 
-      {isRunning && <span className="deploy-running">🟡 Building</span>}
+      <span className={["df-deploy-dot", deployStatus].join(" ")} />
 
-      {isSuccess && <span className="deploy-success">🟢 Production</span>}
+      <span className="deploy-title">🚀 Deploy</span>
 
-      {deploy.status === "completed" && deploy.conclusion !== "success" && (
-        <span className="deploy-error">🔴 Failed</span>
+      <span className={`deploy-${deployStatus}`}>
+        {statusMap[deployStatus]}
+      </span>
+
+      {deploy?.head_branch && (
+        <span className="deploy-branch">{deploy.head_branch}</span>
       )}
 
-      <span>-{deploy.head_branch}</span>
-
-      <span>-{deploy.run_number}】</span>
+      {deploy?.run_number && (
+        <span className="deploy-run">#{deploy.run_number}</span>
+      )}
     </div>
   );
 }
