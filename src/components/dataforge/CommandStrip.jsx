@@ -7,7 +7,7 @@ import { batches } from "@/constants/batch";
 import DeployStatus from "./DeployStatus";
 
 export default function CommandStrip({
-  batch = 1000,
+  batch = 100,
   onBatchChange,
   onRegenerate,
   onSaveSchema,
